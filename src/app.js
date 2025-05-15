@@ -1,4 +1,5 @@
 const express = require('express');
+const dailyGoalRoutes = require('./routes/dailyGoalRoutes');
 const cors = require('cors');
 const helmet = require('helmet');
 require('dotenv').config();
@@ -10,7 +11,7 @@ const app = express();
 app.use(cors());
 app.use(helmet());
 app.use(express.json());
-
+app.use('/api/daily-goals', dailyGoalRoutes);
 app.use('/api', userRoutes);
 
 app.use((err, req, res, next) => {
@@ -18,13 +19,8 @@ app.use((err, req, res, next) => {
   res.status(500).send('Erro interno');
 });
 
-
 app.get('/', (req, res) => {
   res.send('API EcoJourney Online!');
 });
 
-
-const PORT = process.env.PORT || 4040;
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
+module.exports = app; 

@@ -10,10 +10,28 @@ module.exports = {
       database: process.env.DB_NAME || 'ecojourney',
     },
     migrations: {
-      directory: './src/database/migrations'
+      directory: './src/database/migrations',
+      tableName: 'knex_migrations',
     },
     seeds: {
-      directory: './src/database/seeds'
+      directory: './src/database/seeds',
+    }
+  },
+
+  test: {
+    client: 'mysql2',
+    connection: {
+      host: process.env.DB_HOST || 'localhost',
+      user: process.env.DB_USER || 'root',
+      password: process.env.DB_PASSWORD || 'unifeob@123',
+      database: process.env.DB_NAME_TEST || 'ecojourney',
+    },
+    migrations: {
+      directory: './src/database/migrations',
+      tableName: 'knex_migrations',
+    },
+    seeds: {
+      directory: './src/database/seeds',
     }
   }
 };
