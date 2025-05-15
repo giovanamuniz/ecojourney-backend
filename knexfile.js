@@ -1,37 +1,29 @@
-require('dotenv').config();
+require('dotenv').config({ path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env' });
 
 module.exports = {
   development: {
     client: 'mysql2',
     connection: {
-      host: process.env.DB_HOST || 'localhost',
-      user: process.env.DB_USER || 'root',
-      password: process.env.DB_PASSWORD || 'unifeob@123',
-      database: process.env.DB_NAME || 'ecojourney',
+      host: process.env.DB_HOST,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME
     },
     migrations: {
-      directory: './src/database/migrations',
-      tableName: 'knex_migrations',
-    },
-    seeds: {
-      directory: './src/database/seeds',
+      directory: './src/database/migrations'
     }
   },
 
   test: {
     client: 'mysql2',
     connection: {
-      host: process.env.DB_HOST || 'localhost',
-      user: process.env.DB_USER || 'root',
-      password: process.env.DB_PASSWORD || 'unifeob@123',
-      database: process.env.DB_NAME_TEST || 'ecojourney',
+      host: process.env.DB_HOST,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME
     },
     migrations: {
-      directory: './src/database/migrations',
-      tableName: 'knex_migrations',
-    },
-    seeds: {
-      directory: './src/database/seeds',
+      directory: './src/database/migrations'
     }
   }
 };
