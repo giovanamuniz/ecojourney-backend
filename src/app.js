@@ -2,6 +2,8 @@ const express = require('express');
 const dailyGoalRoutes = require('./routes/dailyGoalRoutes');
 const cors = require('cors');
 const helmet = require('helmet');
+
+const suggestionRoutes = require('./routes/suggestionRoutes');
 require('dotenv').config();
 
 const userRoutes = require('./routes/userRoutes');
@@ -22,5 +24,7 @@ app.use((err, req, res, next) => {
 app.get('/', (req, res) => {
   res.send('API EcoJourney Online!');
 });
+
+app.use('/api', suggestionRoutes);
 
 module.exports = app; 
