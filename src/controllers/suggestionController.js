@@ -6,23 +6,29 @@ async function generateSuggestions(req, res) {
   const prompt = `
 O usuário possui uma pegada de carbono de aproximadamente ${carbonFootprint} kg de CO₂ por mês.
 Seus hábitos incluem: ${habits.join(', ')}.
-Com base nisso, sugira 3 hábitos sustentáveis realistas que ele pode adotar para reduzir a emissão de carbono. Seja objetivo.
+Com base nisso, sugira 3 hábitos sustentáveis realistas que ele pode adotar para reduzir a emissão de carbono. Seja objetivo e direto.
   `;
 
   try {
-    const response = await axios.post('https://api.openai.com/v1/chat/completions', {
-      model: 'gpt-3.5-turbo',
-      messages: [{ role: 'user', content: prompt }],
-      max_tokens: 200,
-    }, {
-      headers: {
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-        'Content-Type': 'application/json',
+    const response = await axios.post(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyC-wXzvd4K-8_W0XNjamd_f1y_j9CY4Kdk`
+,
+      {
+        contents: [
+          {
+            parts: [{ text: prompt }],
+          },
+        ],
+      },
+      {
+        headers: { 'Content-Type': 'application/json' },
       }
-    });
+    );
 
-    const text = response.data.choices[0].message.content;
-    const suggestions = text.split('\n').filter(item => item.trim() !== '');
+    const fullText = response.data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    const suggestions = fullText
+      .split('\n')
+      .filter(line => line.trim() !== '' && /\w/.test(line)); 
 
     res.json({ suggestions });
   } catch (error) {

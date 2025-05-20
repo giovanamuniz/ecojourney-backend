@@ -2,12 +2,10 @@ const express = require('express');
 const dailyGoalRoutes = require('./routes/dailyGoalRoutes');
 const cors = require('cors');
 const helmet = require('helmet');
-
 const suggestionRoutes = require('./routes/suggestionRoutes');
 require('dotenv').config();
 
 const userRoutes = require('./routes/userRoutes');
-
 const app = express();
 
 app.use(cors());
