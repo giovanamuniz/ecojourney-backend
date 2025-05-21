@@ -5,5 +5,7 @@ const dailyGoalController = require('../controllers/dailyGoalController');
 
 router.post('/', authenticateToken, dailyGoalController.createGoal);
 router.get('/', authenticateToken, dailyGoalController.getGoalsByUser);
+router.put('/:id', authenticateToken, dailyGoalController.updateGoal);
+router.delete('/:id', authenticateToken, dailyGoalController.deleteGoal);
 
 module.exports = router;
