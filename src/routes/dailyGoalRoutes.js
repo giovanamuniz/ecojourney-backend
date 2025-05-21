@@ -1,14 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const dailyGoalController = require('../controllers/dailyGoalController');
 const authenticateToken = require('../middlewares/authenticateToken');
+const dailyGoalController = require('../controllers/dailyGoalController');
 
-router.use(authenticateToken);
-
-router.post('/', dailyGoalController.createGoal);
-router.get('/', dailyGoalController.getGoals);
-router.put('/:id', dailyGoalController.updateGoal);
-router.delete('/:id', dailyGoalController.deleteGoal);
-router.patch('/:id/toggle', dailyGoalController.toggleGoalCompletion);
+router.post('/', authenticateToken, dailyGoalController.createGoal);
+router.get('/', authenticateToken, dailyGoalController.getGoalsByUser);
 
 module.exports = router;
