@@ -1,4 +1,5 @@
 const axios = require('axios');
+require('dotenv').config();
 
 async function generateSuggestions(req, res) {
   const { habits = [], carbonFootprint = 120.0 } = req.body;
@@ -11,9 +12,9 @@ Com base nisso, sugira 3 hábitos sustentáveis realistas que ele pode adotar pa
 
   try {
     const response = await axios.post(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyC-wXzvd4K-8_W0XNjamd_f1y_j9CY4Kdk`
-,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyC-wXzvd4K-8_W0XNjamd_f1y_j9CY4Kdk`,
       {
+
         contents: [
           {
             parts: [{ text: prompt }],
@@ -25,10 +26,11 @@ Com base nisso, sugira 3 hábitos sustentáveis realistas que ele pode adotar pa
       }
     );
 
+
     const fullText = response.data.candidates?.[0]?.content?.parts?.[0]?.text || '';
     const suggestions = fullText
       .split('\n')
-      .filter(line => line.trim() !== '' && /\w/.test(line)); 
+      .filter(line => line.trim() !== '' && /\w/.test(line));
 
     res.json({ suggestions });
   } catch (error) {
