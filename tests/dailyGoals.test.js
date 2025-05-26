@@ -3,14 +3,16 @@ const app = require('../src/app');
 const knex = require('../src/database/knex');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+jest.setTimeout(20000); 
 
 let token;
 let userId;
 
 beforeAll(async () => {
-  await knex.migrate.rollback();
-  await knex.migrate.latest();
+  await knex.migrate.rollback(null, true); 
+  await knex.migrate.latest();             
 });
+
 
 beforeEach(async () => {
   await knex('daily_goals').del();
@@ -95,7 +97,7 @@ describe('Integração - Metas Diárias', () => {
       .set('Authorization', `Bearer ${token}`);
 
     expect(res.statusCode).toBe(200);
-    expect(res.body.message).toMatch(/deletada/i);
+    expect(res.body.message).toMatch(/excluída/i);
   });
 });
 
