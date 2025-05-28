@@ -2,6 +2,24 @@ const bcrypt = require('bcryptjs');
 const db = require('../connection');
 const jwt = require('jsonwebtoken');
 
+const getUserPoints = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const user = await db('users').where({ id: userId }).first();
+
+
+    if (!user) {
+      return res.status(404).json({ error: 'Usuário não encontrado' });
+    }
+
+    res.json({ points: user.points });
+  } catch (error) {
+    console.error('Erro ao buscar pontos do usuário:', error);
+    res.status(500).json({ error: 'Erro ao buscar pontos do usuário' });
+  }
+}
+
 const register = async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -18,13 +36,14 @@ const register = async (req, res) => {
     const saltRounds = 10;
     const password_hash = await bcrypt.hash(password, saltRounds);
 
-    await db('users').insert({
-      name,
-      email,
-      password_hash,
-    });
+    const [id] = await db('users').insert({
+    name,
+    email,
+    password_hash,
+  });
 
-    return res.status(201).json({ message: 'Usuário cadastrado com sucesso!' });
+  return res.status(201).json({ message: 'Usuário cadastrado com sucesso!', id });
+
   } catch (error) {
     console.error('Erro no registro:', error);
     return res.status(500).json({ error: 'Erro interno no servidor' });
@@ -68,8 +87,10 @@ const login = async (req, res) => {
         id: user.id,
         name: user.name,
         email: user.email,
+        points: user.points,
       }
     });
+
 
   } catch (error) {
     console.error('Erro no login:', error);
@@ -77,7 +98,32 @@ const login = async (req, res) => {
   }
 };
 
+const getUserInfo = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const user = await db('users').where({ id: userId }).first();
+
+    if (!user) {
+      return res.status(404).json({ error: 'Usuário não encontrado' });
+    }
+
+    res.json({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      points: user.points
+    });
+  } catch (error) {
+    console.error('Erro ao buscar informações do usuário:', error);
+    res.status(500).json({ error: 'Erro ao buscar informações do usuário' });
+  }
+};
+
+
 module.exports = {
   register,
   login,
+  getUserPoints,
+  getUserInfo
 };

@@ -24,7 +24,8 @@ module.exports = {
       host: process.env.DB_HOST || 'localhost',
       user: process.env.DB_USER || 'root',
       password: process.env.DB_PASSWORD || '',
-      database: process.env.DB_NAME_TEST || 'ecojourney',
+      database: process.env.DB_NAME_TEST || 'ecojourney_test',
+
     },
     migrations: {
       directory: './src/database/migrations',

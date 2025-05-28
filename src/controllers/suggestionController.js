@@ -4,15 +4,12 @@ require('dotenv').config();
 async function generateSuggestions(req, res) {
   const { habits = [], carbonFootprint = 120.0 } = req.body;
 
-  const prompt = `
-O usuário possui uma pegada de carbono de aproximadamente ${carbonFootprint} kg de CO₂ por mês.
-Seus hábitos incluem: ${habits.join(', ')}.
-Com base nisso, sugira 3 hábitos sustentáveis realistas que ele pode adotar para reduzir a emissão de carbono. Seja objetivo e direto.
-  `;
+  const prompt = `O usuário possui uma pegada de carbono de aproximadamente ${carbonFootprint} kg de CO₂ por mês. Seus hábitos incluem: ${habits.join(', ')}. Com base nisso, sugira 3 hábitos sustentáveis realistas que ele pode adotar para reduzir a emissão de carbono. Seja objetivo e direto.`;
+
 
   try {
-    const response = await axios.post(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyC-wXzvd4K-8_W0XNjamd_f1y_j9CY4Kdk`,
+const response = await axios.post(
+  `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
       {
 
         contents: [

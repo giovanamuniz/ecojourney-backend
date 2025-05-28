@@ -34,6 +34,9 @@ async function createHabit(req, res) {
     console.error('Erro ao criar hábito:', error);
     res.status(500).json({ error: 'Erro ao criar hábito.' });
   }
+  await calcularPegadaCarbono(userId); 
+  res.status(201).json({ id, title, description, value, unit });
+
 }
 
 async function updateHabit(req, res) {
@@ -51,6 +54,9 @@ async function updateHabit(req, res) {
     console.error('Erro ao atualizar hábito:', error);
     res.status(500).json({ error: 'Erro ao atualizar hábito.' });
   }
+  await calcularPegadaCarbono(userId); 
+  res.status(200).json({ message: 'Hábito atualizado com sucesso.' });
+
 }
 
 async function deleteHabit(req, res) {
