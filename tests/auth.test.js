@@ -17,7 +17,7 @@ describe('Registro de usuário', () => {
       .send({
         name: 'Usuário Teste',
         email: 'teste@teste.com',
-        password: '123456'
+        password: '@Usuario123'
       });
 
     expect(response.statusCode).toBe(201);
@@ -30,7 +30,7 @@ describe('Registro de usuário', () => {
       .send({
         name: 'Outro Usuário',
         email: 'teste@teste.com',
-        password: '654321'
+        password: '@Usuario123'
       });
 
     expect(response.statusCode).toBe(409);

@@ -20,7 +20,7 @@ beforeEach(async () => {
 
   
   const uniqueEmail = `test${Date.now()}@example.com`;
-  const hashedPassword = await bcrypt.hash('123456', 8);
+  const hashedPassword = await bcrypt.hash('@Usuario123', 8);
 
   const [id] = await knex('users').insert({
     email: uniqueEmail,

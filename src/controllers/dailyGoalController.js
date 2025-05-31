@@ -61,6 +61,7 @@ async function updateGoal(req, res) {
   }
 }
 
+
 async function deleteGoal(req, res) {
   const userId = req.user.id;
   const { id } = req.params;

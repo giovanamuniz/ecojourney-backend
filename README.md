@@ -1,6 +1,6 @@
 # EcoJourney - Backend
 
-API REST desenvolvida para o aplicativo EcoJourney, uma solução que ajuda usuários a monitorar e reduzir sua pegada de carbono por meio do registro de hábitos e metas diárias.
+API REST desenvolvida para o aplicativo EcoJourney, uma solução que ajuda usuários a monitorar e reduzir sua pegada de carbono por meio do registro de hábitos e metas sustentáveis.
 
 ---
 
@@ -18,7 +18,7 @@ Criar uma plataforma simples, segura e eficiente para:
 
 ## Tecnologias Utilizadas
 
-- **Node.js** (runtime)
+- **Node.js** (ambiente de execução)
 - **Express.js** (framework para API REST)
 - **Knex.js** (query builder para SQL)
 - **MySQL** (banco de dados relacional)
