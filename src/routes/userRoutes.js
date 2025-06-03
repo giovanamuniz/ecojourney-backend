@@ -1,13 +1,22 @@
 const express = require('express');
 const router = express.Router();
-const userController = require('../controllers/userController');
-const authenticateToken = require('../middlewares/authenticateToken');
 
-router.post('/register', userController.register);
-router.post('/login', userController.login);
-router.get('/user/points', authenticateToken, userController.getUserPoints);
-router.get('/user/info', authenticateToken, userController.getUserInfo); 
+const {
+  register,
+  login,
+  getUserPoints,
+  getUserInfo,
+  addPoints,
+  redeemPoints,
+} = require('../controllers/userController');
 
+const authenticate = require('../middlewares/authenticateToken');
 
+router.post('/register', register);
+router.post('/login', login);
+router.get('/user/points', authenticate, getUserPoints);
+router.get('/user/info', authenticate, getUserInfo);
+router.post('/add-points', authenticate, addPoints);
+router.post('/redeem-points', authenticate, redeemPoints);
 
 module.exports = router;
