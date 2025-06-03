@@ -29,34 +29,42 @@ async function createHabit(req, res) {
       unit,
     });
 
-    res.status(201).json({ id, title, description, value, unit });
+    await calcularPegadaCarbono(userId);
+
+    return res.status(201).json({ id, title, description, value, unit });
   } catch (error) {
     console.error('Erro ao criar hábito:', error);
-    res.status(500).json({ error: 'Erro ao criar hábito.' });
+    return res.status(500).json({ error: 'Erro ao criar hábito.' });
   }
-  await calcularPegadaCarbono(userId); 
-  res.status(201).json({ id, title, description, value, unit });
-
 }
 
 async function updateHabit(req, res) {
+  const userId = req.user.id;
   const { id } = req.params;
   const { title, description, value, unit } = req.body;
-  const userId = req.user.id;
+
+  if (!title || !description || !value || !unit) {
+    return res.status(400).json({ error: 'Preencha todos os campos.' });
+  }
 
   try {
+    const habit = await db('habits').where({ id, user_id: userId }).first();
+
+    if (!habit) {
+      return res.status(404).json({ error: 'Hábito não encontrado.' });
+    }
+
     await db('habits')
       .where({ id, user_id: userId })
       .update({ title, description, value, unit });
 
-    res.status(200).json({ message: 'Hábito atualizado com sucesso.' });
+    await calcularPegadaCarbono(userId);
+
+    return res.status(200).json({ message: 'Hábito atualizado com sucesso.' });
   } catch (error) {
     console.error('Erro ao atualizar hábito:', error);
-    res.status(500).json({ error: 'Erro ao atualizar hábito.' });
+    return res.status(500).json({ error: 'Erro ao atualizar hábito.' });
   }
-  await calcularPegadaCarbono(userId); 
-  res.status(200).json({ message: 'Hábito atualizado com sucesso.' });
-
 }
 
 async function deleteHabit(req, res) {
@@ -68,10 +76,12 @@ async function deleteHabit(req, res) {
       .where({ id, user_id: userId })
       .del();
 
-    res.status(200).json({ message: 'Hábito excluído com sucesso.' });
+    await calcularPegadaCarbono(userId);
+
+    return res.status(200).json({ message: 'Hábito excluído com sucesso.' });
   } catch (error) {
     console.error('Erro ao excluir hábito:', error);
-    res.status(500).json({ error: 'Erro ao excluir hábito.' });
+    return res.status(500).json({ error: 'Erro ao excluir hábito.' });
   }
 }
 
@@ -93,7 +103,6 @@ async function calcularPegadaCarbono(userId) {
 
   return total;
 }
-
 
 module.exports = {
   getHabits,

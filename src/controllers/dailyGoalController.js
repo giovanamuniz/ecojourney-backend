@@ -54,12 +54,20 @@ async function updateGoal(req, res) {
       .where({ id, user_id: userId })
       .update({ title, description, completed });
 
-    res.json({ message: 'Meta atualizada com sucesso' });
+    // ⬇️ Se completou a meta, adiciona pontos:
+    if (completed) {
+      await db('users')
+        .where({ id: userId })
+        .increment('points', 10);
+    }
+
+    return res.json({ message: 'Meta atualizada com sucesso' });
   } catch (error) {
     console.error('Erro ao atualizar meta:', error);
     res.status(500).json({ error: 'Erro interno ao atualizar meta.' });
   }
 }
+
 
 
 async function deleteGoal(req, res) {
